@@ -10,9 +10,8 @@ def no_whitespace(data):
 
 def get_price(item):
     html_content = no_whitespace(requests.get(item["url"]).text)
-    prefix = no_whitespace(item["prefix"])
-    suffix = no_whitespace(item["suffix"])
-    return re.search(prefix + '(.+?)' + suffix, html_content).group(1)
+    pattern = no_whitespace(item["pattern"])
+    return re.search(pattern, html_content).group(1)
 
 
 if __name__ == '__main__':

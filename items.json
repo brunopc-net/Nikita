@@ -3,8 +3,13 @@
     {
       "name": "Zipp 404",
       "url": "https://www.probikekit.ca/bicycle-wheels/zipp-404-firecrest-carbon-tubeless-disc-brake-wheelset/13151425.html",
-      "prefix": "<p class=\"productPrice_price  \" data-product-price=\"price\">",
-      "suffix": "</p>"
+      "pattern": "<p class=\"productPrice_price \"data-product-price=\"price\">(.+?)</p>",
+      "updates": [
+        {
+          "date": "2023-03-10",
+          "value": "CA$2863.00"
+        }
+      ]
     }
   ]
 }
