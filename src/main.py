@@ -1,23 +1,48 @@
-import requests
-import re
 import json
+import os
+import sys
 
+import log4p
 
-def no_whitespace(data):
-    nws_pattern = re.compile(r'\s+')
-    return re.sub(nws_pattern, '', data)
+import src.probikekit as probikekit
+import src.amazon as amazon
+import src.canadian_tire as canadian_tire
+import src.storage as storage
+import src.twillio as twillio
+
+logger = log4p.GetLogger(__name__, config="log4p.json").logger
 
 
 def get_price(item):
-    html_content = no_whitespace(requests.get(item["url"]).text)
-    pattern = no_whitespace(item["pattern"])
-    return re.search(pattern, html_content).group(1)
+    store = item['store'].lower().replace(" ", "")
+    if "probikekit" == store:
+        return probikekit.get_price(item['code'])
+    if 'amazon' == store:
+        return amazon.get_price(item['code'])
+    if 'canadiantire' == store:
+        return canadian_tire.get_price(item['code'])
+
+
+def send_price_drop_alert(item):
+    last_price = storage.get_last_price(item)
+    current_price = get_price(item)
+
+    if last_price is None or current_price >= last_price:
+        sys.exit()
+
+    twillio_client = twillio.TwillioClient(
+        os.environ["twillio_sid"],
+        os.environ["twillio_token"],
+        os.environ["twillio_phone"]
+    )
+    twillio_client.send_text(
+        to=sys.argv[1],
+        msg=f'Price drop! {item["store"]} - {item["name"]} from ${last_price} to ${current_price}. -Nikita'
+    )
 
 
 if __name__ == '__main__':
-    items = json.load(open('../items.json'))
-    for i in items["items"]:
-        price = get_price(i)
-        print(price)
+    for i in storage.get_items():
+        send_price_drop_alert(i)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

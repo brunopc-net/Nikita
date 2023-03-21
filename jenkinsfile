@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+    environment {
+        TWILLIO_CREDENTIALS = credentials('b209203c-fad5-4d4c-a5f3-b459d89cd915')
+        TWILLIO_PHONE = credentials('784883cd-76fe-425f-bcac-2ee3f4193e0f')
+        TO_PHONE = credentials('32c147c7-99aa-456b-972d-0f68c6d0e0ed')
+    }
+    parameters {
+        booleanParam(
+            name: 'rebuild',
+            defaultValue: false,
+            description: 'Select this option if there\'s an update in the project - let unchecked if just executing'
+        )
+    }
+    stages {
+        stage ('Set credentials') {
+            steps {
+                sh 'echo TWILLIO_SID=${TWILLIO_CREDENTIALS_USR} > .env'
+                sh 'echo TWILLIO_TOKEN=${TWILLIO_CREDENTIALS_PSW} >> .env'
+                sh 'echo TWILLIO_PHONE=${TWILLIO_PHONE} >> .env'
+                sh 'echo TO_PHONE=${TO_PHONE} >> .env'
+            }
+        }
+        stage('Delete old docker image') {
+            when {
+                environment name: 'rebuild', value: 'true'
+            }
+            steps {
+                sh 'docker image rm cerberus-cerberus'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker compose up -d'
+            }
+        }
+        stage ('Test'){
+            when {
+                environment name: 'rebuild', value: 'true'
+            }
+            steps {
+                sh 'docker exec -t nikita python -m unittest discover tests'
+            }
+        }
+        stage('Execute') {
+            steps {
+                sh 'docker exec -t nikita python src/main.py'
+            }
+        }
+    }
+    post {
+        always {
+            sh 'docker compose down' //Stopping docker
+            sh 'rm -f .env' //Deleting env file for security as it contains credentials
+            echo 'Bye bye!!! It\'s been a pleasure, master!'
+        }
+    }
+}
