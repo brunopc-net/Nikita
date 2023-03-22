@@ -18,3 +18,4 @@ class TwillioClient:
         )
         logger.info("Text msg sent, sid: " + txt_msg.sid + ", status: " + str(txt_msg.status))
         logger.info("Text msg price: " + str(txt_msg.price))
+        return txt_msg
