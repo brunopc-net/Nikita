@@ -28,7 +28,6 @@ class PriceCheckerTest(unittest.TestCase):
     def test_price_drop(self):
         item = items[0]
 
-        storage.update_last_price(item, 2863.00)
         last_price = storage.get_last_price(item)
         storage.update_last_price(item, 999999)
 
