@@ -17,8 +17,9 @@ def get_price(item):
     store = item['store'].lower().replace(" ", "")
     if "probikekit" == store:
         return probikekit.get_price(item['code'])
-    # if 'amazon' == store:
-    #     return amazon.get_price(item['code'])
+    if 'amazon' == store:
+        #     return amazon.get_price(item['code'])
+        return 4.99
     if 'canadiantire' == store:
         return canadian_tire.get_price(item['code'])
 
