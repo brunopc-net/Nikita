@@ -20,7 +20,7 @@ def get_current_price(item):
 
 
 def get_price_drop(item):
-    item_desc = storage.get_key(item)
+    item_desc = storage.get_desc(item)
     last_price = storage.get_last_price(item)
     current_price = get_current_price(item)
 

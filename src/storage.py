@@ -29,3 +29,7 @@ def update_last_price(item, price):
 
 def get_key(item):
     return item['store'] + ":" + item['code']
+
+
+def get_desc(item):
+    return f'{item["name"]}({item["store"]})'
