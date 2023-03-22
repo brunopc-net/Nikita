@@ -1,5 +1,4 @@
 import json
-import os
 import redis
 import log4p
 

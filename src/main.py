@@ -36,7 +36,7 @@ def send_price_drop_alert(item):
         os.environ["twillio_phone"]
     )
     twillio_client.send_text(
-        to=sys.argv[1],
+        to=os.environ["to_phone"],
         msg=f'Price drop! {item["store"]} - {item["name"]} from ${last_price} to ${current_price}. -Nikita'
     )
 
