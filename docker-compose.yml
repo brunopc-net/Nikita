@@ -11,6 +11,11 @@ services:
 
   nikita:
     container_name: nikita
+    environment:
+      twillio_sid: ${TWILLIO_SID}
+      twillio_token: ${TWILLIO_TOKEN}
+      twillio_phone: ${TWILLIO_PHONE}
+      to_phone: ${TO_PHONE}
     build:
       context: .
       dockerfile: Dockerfile

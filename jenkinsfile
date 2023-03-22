@@ -15,11 +15,10 @@ pipeline {
     stages {
         stage ('Set credentials') {
             steps {
-                sh 'echo twillio_sid=${TWILLIO_CREDENTIALS_USR} > .env'
-                sh 'echo twillio_token=${TWILLIO_CREDENTIALS_PSW} >> .env'
-                sh 'echo twillio_phone=${TWILLIO_PHONE} >> .env'
-                sh 'echo to_phone=${TO_PHONE} >> .env'
-                sh 'cat .env'
+                sh 'echo TWILLIO_SID=${TWILLIO_CREDENTIALS_USR} > .env'
+                sh 'echo TWILLIO_TOKEN=${TWILLIO_CREDENTIALS_PSW} >> .env'
+                sh 'echo TWILLIO_PHONE=${TWILLIO_PHONE} >> .env'
+                sh 'echo TO_PHONE=${TO_PHONE} >> .env'
             }
         }
         stage('Delete old docker image') {
