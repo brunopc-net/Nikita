@@ -19,6 +19,7 @@ pipeline {
                 sh 'echo twillio_token=${TWILLIO_CREDENTIALS_PSW} >> .env'
                 sh 'echo twillio_phone=${TWILLIO_PHONE} >> .env'
                 sh 'echo to_phone=${TO_PHONE} >> .env'
+                sh 'cat .env'
             }
         }
         stage('Delete old docker image') {
