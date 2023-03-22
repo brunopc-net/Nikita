@@ -21,7 +21,6 @@ pipeline {
                 sh 'echo to_phone=${TO_PHONE} >> .env'
             }
         }
-
         stage('Delete old docker image') {
             when {
                 environment name: 'rebuild', value: 'true'
@@ -43,13 +42,11 @@ pipeline {
                 sh 'docker exec -t nikita python -m unittest discover tests'
             }
         }
-        /*
         stage('Execute') {
             steps {
                 sh 'docker exec -t nikita python src/main.py'
             }
         }
-        */
     }
     post {
         always {
