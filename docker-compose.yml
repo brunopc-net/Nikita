@@ -9,7 +9,7 @@ services:
     volumes:
       - redis_data:/data
 
-  cerberus:
+  nikita:
     container_name: nikita
     build:
       context: .
