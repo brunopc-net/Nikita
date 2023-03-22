@@ -21,6 +21,7 @@ pipeline {
                 sh 'echo to_phone=${TO_PHONE} >> .env'
             }
         }
+        /*
         stage('Delete old docker image') {
             when {
                 environment name: 'rebuild', value: 'true'
@@ -29,6 +30,7 @@ pipeline {
                 sh 'docker image rm nikita-nikita'
             }
         }
+        */
         stage('Build') {
             steps {
                 sh 'docker compose up -d'
